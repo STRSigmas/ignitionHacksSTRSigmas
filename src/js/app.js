@@ -1,4 +1,17 @@
+let map;
+let service;
+
 // map initialization
+function initMap() {
+    console.log("initializing map");
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 43.6532, lng: -79.3832 }, // default to toronto
+        zoom: 13
+    });
+
+    service = new google.maps.places.PlacesService(map);
+    geocoder = new google.maps.Geocoder();
+}
 // address input handling
 // address autocomplete display
 // handle autocomplete selection
