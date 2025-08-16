@@ -1,0 +1,4 @@
+[
+  { "name": "Library", "location": "Main Campus", "capacity": 100 },
+  { "name": "Cafe Study", "location": "Downtown", "capacity": 30 }
+]
