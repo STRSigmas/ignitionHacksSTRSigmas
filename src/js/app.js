@@ -543,14 +543,19 @@ function displaySpots(spots) {
 
     // polish inner html later
     spotsList.innerHTML = filteredSpots.map((spot, index) => `
-        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="panToLocation('${spot.place_id}')">
-            <h4>${spot.name || 'Unknown Name'}</h4>
-            <p><strong>Score:</strong> ${spot.scoreData.totalScore.toFixed(1)}/100</p>
-            <p><strong>Distance:</strong> ${spot.scoreData.distance.toFixed(2)} km</p>
-            <p><strong>Rating:</strong> ${spot.rating || 'No rating'} ⭐ (${spot.user_ratings_total || 0} reviews)</p>
-            <p><strong>Address:</strong> ${spot.vicinity || 'No address'}</p>
-            <p><strong>Type:</strong> ${spot.placeType}</p>
-            <p><strong>Status:</strong> ${spot.opening_hours ? (spot.opening_hours.open_now ? '🟢 Open Now' : '🔴 Closed') : '❓ Hours Unknown'}</p>
+        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 5px;">
+            <div style="cursor: pointer;" onclick="panToLocation('${spot.place_id}')">
+                <h4>${spot.name || 'Unknown Name'}</h4>
+                <p><strong>Score:</strong> ${spot.scoreData.totalScore.toFixed(1)}/100</p>
+                <p><strong>Distance:</strong> ${spot.scoreData.distance.toFixed(2)} km</p>
+                <p><strong>Rating:</strong> ${spot.rating || 'No rating'} ⭐ (${spot.user_ratings_total || 0} reviews)</p>
+                <p><strong>Address:</strong> ${spot.vicinity || 'No address'}</p>
+                <p><strong>Type:</strong> ${spot.placeType}</p>
+                <p><strong>Status:</strong> ${spot.opening_hours ? (spot.opening_hours.open_now ? '🟢 Open Now' : '🔴 Closed') : '❓ Hours Unknown'}</p>
+            </div>
+            <button style="background-color: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-top: 10px;" onclick="startStudying('${spot.place_id}', '${spot.name?.replace(/'/g, '\\\'') || 'Unknown Name'}')" onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'">
+                📚 Start Studying
+            </button>
         </div>
     `).join('');
     
@@ -693,4 +698,19 @@ function createInfoWindowContent(spot) {
             ${spot.website ? `<div style="margin-top: 10px;"><a href="${spot.website}" target="_blank" style="color: #007bff;">Visit Website</a></div>` : ''}
         </div>
     `;
+}
+
+// handle start studying button click
+function startStudying(placeId, placeName) {
+    // find the spot data
+    const spot = studySpots.find(s => s.place_id === placeId);
+    if (!spot) {
+        alert('Location not found');
+        return;
+    }
+
+    // pan to the location on the map
+    panToLocation(placeId);
+    
+    
 }
