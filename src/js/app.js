@@ -452,6 +452,14 @@ function calculateScore(place) {
         value: place.placeType.charAt(0).toUpperCase() + place.placeType.slice(1)
     };
 
+    // scoring based on hours (if it's open or closed rn)
+    const isOpen = place.opening_hours?.open_now;
+    const statusScore = isOpen ? 5 : 0;
+    score += statusScore;
+    factors.openStatus = {
+        value: isOpen ? 'Currently open' : 'Currently closed'
+    };
+
     // implement all other scoring later
     
     return {
@@ -510,6 +518,7 @@ function displaySpots(spots) {
             <p><strong>Rating:</strong> ${spot.rating || 'No rating'} ⭐ (${spot.user_ratings_total || 0} reviews)</p>
             <p><strong>Address:</strong> ${spot.vicinity || 'No address'}</p>
             <p><strong>Type:</strong> ${spot.placeType}</p>
+            <p><strong>Status:</strong> ${spot.opening_hours ? (spot.opening_hours.open_now ? '🟢 Open Now' : '🔴 Closed') : '❓ Hours Unknown'}</p>
         </div>
     `).join('');
     return;
