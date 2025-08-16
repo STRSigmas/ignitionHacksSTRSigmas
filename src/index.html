@@ -1,174 +1,974 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>StudyLocal</title>
-        <link href="bootstrap/main.css" rel="stylesheet" />
-        <link href="css/custom.css" rel="stylesheet" />
-        <script src="bootstrap/bootstrap.bundle.min.js"></script>
-        <script src="js/index.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&loading=async&libraries=maps&v=beta" defer></script>
-    </head>
-    <body class="bg-dark">
-        <main>
-            <div class="container-fluid">
-                <div class="row justify-content-evenly">
-                    <div class="col-12 justify-content-center align-items-center text-center">
-                        <h1 class="text-light title-text mt-5 fw-bold mb-5">StudyLocal</h1>
-                    </div>
-                </div>
-                <div class="row justify-content-evenly">
-                    <div class="col-12">
-                        <div class="selection-card py-5 px-5 mx-2 mx-md-5">
-                            <div class="d-flex flex-wrap align-items-center gap-5">
-                                <input type="number" class="form-control fs-2 w-auto" placeholder="Maximum distance" aria-label="Maximum distance" aria-describedby="basic-addon1">
-                                <div class="dropdown" data-bs-theme="dark">
-                                    <button class="btn btn-primary dropdown-toggle fs-2 rounded-3" type="button" data-bs-toggle="dropdown" style="max-width: 16rem; overflow-x: hidden;" aria-expanded="false" id="multiSelectDropdown">Location types</button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <label class="fs-2 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="Library">Library</label>
-                                        </li>
-                                        <li>
-                                            <label class="fs-2 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="Cafe">Cafe</label>
-                                        </li>
-                                        <li>
-                                            <label class="fs-2 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="Park">Park</label>
-                                        </li>
-                                        <li>
-                                            <label class="fs-2 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="University">University</label>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="form-check d-flex align-items-center">
-                                    <div class="form-check d-flex align-items-center">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkWifi">
-                                        <label class="form-check-label fs-2 ms-2" for="checkWifi">Wifi</label>
-                                    </div>
-                                </div>
-                                <div class="form-check d-flex align-items-center">
-                                    <div class="form-check d-flex align-items-center">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkOpen">
-                                        <label class="form-check-label fs-2 ms-2" for="checkOpen">Open now</label>
-                                    </div>
-                                </div>
-                                <div class="form-check d-flex align-items-center">
-                                    <div class="form-check d-flex align-items-center">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkAccessible">
-                                        <label class="form-check-label fs-2 ms-2" for="checkAccessible">Accessible</label>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column">
-                                    <label class="form-label fs-4">Other students</label>
-                                    <div class="d-flex align-items-center" style="gap: 0.5rem">
-                                        <input type="number" class="form-control fs-2" style="width: 200px;" placeholder="Minimum" aria-label="Minimum distance" aria-describedby="basic-addon1">
-                                        <input type="number" class="form-control fs-2" style="width: 200px;" placeholder="Maximum" aria-label="Maximum distance" aria-describedby="basic-addon1">
-                                    </div>
-                                </div>
-                                <div class="dropdown" data-bs-theme="dark">
-                                    <button class="btn btn-primary dropdown-toggle fs-2 rounded-3" style="max-width: 16rem; overflow-x: hidden;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="multiSelectSubjectDropdown">Subjects</button>
-                                    <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
-                                        <li class="px-3 py-2 sticky-top bg-primary dropdown-search" style="z-index:1;">
-                                            <input type="text" class="form-control fs-4" id="dropdownSubjectSearch" placeholder="Search">
-                                        </li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Mathematics">Mathematics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Pure Mathematics">Pure Mathematics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Applied Mathematics">Applied Mathematics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Statistics">Statistics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Probability">Probability</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Computer Science">Computer Science</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Programming">Programming</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Machine Learning">Machine Learning</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Artificial Intelligence">Artificial Intelligence</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Data Science">Data Science</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Software Engineering">Software Engineering</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Cybersecurity">Cybersecurity</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Physics">Physics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Classical Physics">Classical Physics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Quantum Physics">Quantum Physics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Astrophysics">Astrophysics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Chemistry">Chemistry</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Organic Chemistry">Organic Chemistry</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Inorganic Chemistry">Inorganic Chemistry</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Biochemistry">Biochemistry</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Biology">Biology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Molecular Biology">Molecular Biology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Genetics">Genetics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Microbiology">Microbiology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Ecology">Ecology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Engineering">Engineering</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Mechanical Engineering">Mechanical Engineering</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Electrical Engineering">Electrical Engineering</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Civil Engineering">Civil Engineering</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Aerospace Engineering">Aerospace Engineering</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Robotics">Robotics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Environmental Science">Environmental Science</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Astronomy">Astronomy</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Psychology">Psychology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Sociology">Sociology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Political Science">Political Science</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Economics">Economics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Anthropology">Anthropology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="History">History</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Philosophy">Philosophy</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Literature">Literature</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Linguistics">Linguistics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Art History">Art History</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Fine Arts">Fine Arts</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Creative Writing">Creative Writing</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Film Studies">Film Studies</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="French">French</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="English">English</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="English">Mandarin Chinese</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="English">Punjabi</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="English">Spanish</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Business Administration">Business Administration</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Marketing">Marketing</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Finance">Finance</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Accounting">Accounting</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Entrepreneurship">Entrepreneurship</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Supply Chain Management">Supply Chain Management</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Project Management">Project Management</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Human Resource Management">Human Resource Management</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Medicine">Medicine</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Nursing">Nursing</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Pharmacy">Pharmacy</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Public Health">Public Health</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Nutrition & Dietetics">Nutrition & Dietetics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Sports Science">Sports Science</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Law">Law</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Public Policy">Public Policy</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Criminology">Criminology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Legal Studies">Legal Studies</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Culinary Arts">Culinary Arts</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Graphic Design">Graphic Design</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Fashion Design">Fashion Design</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Interior Design">Interior Design</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Automotive Technology">Automotive Technology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Construction & Carpentry">Construction & Carpentry</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Electrical & Plumbing Trades">Electrical & Plumbing Trades</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Film & Video Production">Film & Video Production</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Renewable Energy">Renewable Energy</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Bioinformatics">Bioinformatics</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Neuroscience">Neuroscience</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Blockchain Technology">Blockchain Technology</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="UX/UI Design">UX/UI Design</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Digital Marketing">Digital Marketing</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Climate Science">Climate Science</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Urban Planning">Urban Planning</label></li>
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row flex-grow-1 h-100">
-                    <div class="col-8 d-flex flex-column h-100">
-                        <iframe class="flex-grow-1 mt-5 ms-5 w-100" style="border-radius:10px" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCWw9WQ-NZvohw6cyog_E-SB_GxCCs8hr0&q=Space+Needle,Seattle+WA"></iframe>
+	<head>
+		<title>StudyLocal</title>
+		<link href="bootstrap/main.css" rel="stylesheet" />
+		<link href="css/custom.css" rel="stylesheet" />
+		<script src="bootstrap/bootstrap.bundle.min.js"></script>
+		<script src="js/index.js"></script>
+	</head>
+	<body class="bg-dark">
+		<main>
+			<div class="container-fluid min-vh-100 d-flex flex-column">
+				<div class="row justify-content-evenly">
+					<div
+						class="col-12 justify-content-center align-items-center text-center"
+					>
+						<h1 class="text-light title-text mt-5 fw-bold mb-5">StudyLocal</h1>
+					</div>
+				</div>
+				<div class="row justify-content-evenly">
+					<div class="col-12">
+						<div class="selection-card py-5 px-5 mx-2 mx-md-5 rounded-5">
+							<div class="d-flex flex-wrap align-items-center gap-5">
+								<input
+									type="number"
+									class="form-control fs-2 w-auto"
+									placeholder="Maximum distance (km)"
+									aria-label="Maximum distance (km)"
+									aria-describedby="basic-addon1"
+								/>
+								<div class="dropdown" data-bs-theme="dark">
+									<button
+										class="btn btn-primary dropdown-toggle fs-2 rounded-3"
+										type="button"
+										data-bs-toggle="dropdown"
+										style="max-width: 18rem; overflow-x: hidden"
+										aria-expanded="false"
+										id="multiSelectDropdown"
+									>
+										Location types
+									</button>
+									<ul class="dropdown-menu">
+										<li>
+											<label class="fs-2 d-flex align-items-center ms-2 me-3"
+												><input
+													type="checkbox"
+													class="locationDrop me-2"
+													value="Library"
+												/>Library</label
+											>
+										</li>
+										<li>
+											<label class="fs-2 d-flex align-items-center ms-2 me-3"
+												><input
+													type="checkbox"
+													class="locationDrop me-2"
+													value="Cafe"
+												/>Cafe</label
+											>
+										</li>
+										<li>
+											<label class="fs-2 d-flex align-items-center ms-2 me-3"
+												><input
+													type="checkbox"
+													class="locationDrop me-2"
+													value="Park"
+												/>Park</label
+											>
+										</li>
+										<li>
+											<label class="fs-2 d-flex align-items-center ms-2 me-3"
+												><input
+													type="checkbox"
+													class="locationDrop me-2"
+													value="University"
+												/>University</label
+											>
+										</li>
+									</ul>
+								</div>
+								<div class="form-check d-flex align-items-center">
+									<div class="form-check d-flex align-items-center">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											value=""
+											id="checkWifi"
+										/>
+										<label class="form-check-label fs-2 ms-2" for="checkWifi"
+											>Wifi</label
+										>
+									</div>
+								</div>
+								<div class="form-check d-flex align-items-center">
+									<div class="form-check d-flex align-items-center">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											value=""
+											id="checkOpen"
+										/>
+										<label class="form-check-label fs-2 ms-2" for="checkOpen"
+											>Open now</label
+										>
+									</div>
+								</div>
+								<div class="form-check d-flex align-items-center">
+									<div class="form-check d-flex align-items-center">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											value=""
+											id="checkAccessible"
+										/>
+										<label
+											class="form-check-label fs-2 ms-2"
+											for="checkAccessible"
+											>Accessible</label
+										>
+									</div>
+								</div>
+								<div class="d-flex flex-column">
+									<label class="form-label fs-4">Other students</label>
+									<div class="d-flex align-items-center" style="gap: 0.5rem">
+										<input
+											type="number"
+											class="form-control fs-2"
+											style="width: 200px"
+											placeholder="Minimum"
+											aria-label="Minimum"
+											aria-describedby="basic-addon1"
+										/>
+										<input
+											type="number"
+											class="form-control fs-2"
+											style="width: 200px"
+											placeholder="Maximum"
+											aria-label="Maximum"
+											aria-describedby="basic-addon1"
+										/>
+									</div>
+								</div>
+								<div class="dropdown" data-bs-theme="dark">
+									<button
+										class="btn btn-primary dropdown-toggle fs-2 rounded-3"
+										style="max-width: 16rem; overflow-x: hidden"
+										type="button"
+										data-bs-toggle="dropdown"
+										aria-expanded="false"
+										id="multiSelectSubjectDropdown"
+									>
+										Subjects
+									</button>
+									<ul
+										class="dropdown-menu"
+										style="max-height: 300px; overflow-y: auto"
+									>
+										<li
+											class="px-3 py-2 sticky-top bg-primary dropdown-search"
+											style="z-index: 1"
+										>
+											<input
+												type="text"
+												class="form-control fs-4"
+												id="dropdownSubjectSearch"
+												placeholder="Search"
+											/>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Mathematics"
+												/>Mathematics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Pure Mathematics"
+												/>Pure Mathematics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Applied Mathematics"
+												/>Applied Mathematics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Statistics"
+												/>Statistics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Probability"
+												/>Probability</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Computer Science"
+												/>Computer Science</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Programming"
+												/>Programming</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Machine Learning"
+												/>Machine Learning</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Artificial Intelligence"
+												/>Artificial Intelligence</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Data Science"
+												/>Data Science</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Software Engineering"
+												/>Software Engineering</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Cybersecurity"
+												/>Cybersecurity</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Physics"
+												/>Physics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Classical Physics"
+												/>Classical Physics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Quantum Physics"
+												/>Quantum Physics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Astrophysics"
+												/>Astrophysics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Chemistry"
+												/>Chemistry</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Organic Chemistry"
+												/>Organic Chemistry</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Inorganic Chemistry"
+												/>Inorganic Chemistry</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Biochemistry"
+												/>Biochemistry</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Biology"
+												/>Biology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Molecular Biology"
+												/>Molecular Biology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Genetics"
+												/>Genetics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Microbiology"
+												/>Microbiology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Ecology"
+												/>Ecology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Engineering"
+												/>Engineering</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Mechanical Engineering"
+												/>Mechanical Engineering</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Electrical Engineering"
+												/>Electrical Engineering</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Civil Engineering"
+												/>Civil Engineering</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Aerospace Engineering"
+												/>Aerospace Engineering</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Robotics"
+												/>Robotics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Environmental Science"
+												/>Environmental Science</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Astronomy"
+												/>Astronomy</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Psychology"
+												/>Psychology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Sociology"
+												/>Sociology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Political Science"
+												/>Political Science</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Economics"
+												/>Economics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Anthropology"
+												/>Anthropology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="History"
+												/>History</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Philosophy"
+												/>Philosophy</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Literature"
+												/>Literature</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Linguistics"
+												/>Linguistics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Art History"
+												/>Art History</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Fine Arts"
+												/>Fine Arts</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Creative Writing"
+												/>Creative Writing</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Film Studies"
+												/>Film Studies</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="French"
+												/>French</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="English"
+												/>English</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="English"
+												/>Mandarin Chinese</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="English"
+												/>Punjabi</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="English"
+												/>Spanish</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Business Administration"
+												/>Business Administration</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Marketing"
+												/>Marketing</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Finance"
+												/>Finance</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Accounting"
+												/>Accounting</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Entrepreneurship"
+												/>Entrepreneurship</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Supply Chain Management"
+												/>Supply Chain Management</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Project Management"
+												/>Project Management</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Human Resource Management"
+												/>Human Resource Management</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Medicine"
+												/>Medicine</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Nursing"
+												/>Nursing</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Pharmacy"
+												/>Pharmacy</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Public Health"
+												/>Public Health</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Nutrition & Dietetics"
+												/>Nutrition & Dietetics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Sports Science"
+												/>Sports Science</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Law"
+												/>Law</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Public Policy"
+												/>Public Policy</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Criminology"
+												/>Criminology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Legal Studies"
+												/>Legal Studies</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Culinary Arts"
+												/>Culinary Arts</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Graphic Design"
+												/>Graphic Design</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Fashion Design"
+												/>Fashion Design</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Interior Design"
+												/>Interior Design</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Automotive Technology"
+												/>Automotive Technology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Construction & Carpentry"
+												/>Construction & Carpentry</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Electrical & Plumbing Trades"
+												/>Electrical & Plumbing Trades</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Film & Video Production"
+												/>Film & Video Production</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Renewable Energy"
+												/>Renewable Energy</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Bioinformatics"
+												/>Bioinformatics</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Neuroscience"
+												/>Neuroscience</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Blockchain Technology"
+												/>Blockchain Technology</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="UX/UI Design"
+												/>UX/UI Design</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Digital Marketing"
+												/>Digital Marketing</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Climate Science"
+												/>Climate Science</label
+											>
+										</li>
+										<li class="d-flex align-items-center">
+											<label class="fs-4 ms-2 me-3"
+												><input
+													type="checkbox"
+													class="subjectDrop me-2"
+													value="Urban Planning"
+												/>Urban Planning</label>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-evenly mt-5">
+                    <div class="col-8 d-flex justify-content-end">
+                        <input
+                            type="text"
+                            class="form-control fs-2 w-75"
+                            placeholder="Enter address here"
+                            aria-label="Enter address here"
+                            aria-describedby="basic-addon1"
+                        />
+                        <div id="autocompleteDropdown" class="autocomplete-dropdown position-absolute w-100 bg-light rounded shadow-lg" style="top: 100%; z-index: 1000; max-height: 300px; overflow-y: auto; display: none;"></div>
                     </div>
                     <div class="col-4">
+                        <div id="useLocationBtn" class="btn btn-primary fs-2">Use current location</div>
                     </div>
                 </div>
-            </div>
-        </main>
-    </body>
+				<div class="row flex-grow-1">
+                    <div class="col-8 mt-5 ms-5 d-flex flex-column">
+                        <div class="content mb-5 flex-grow-1 d-flex flex-column">
+						    <div class="rounded-5 flex-grow-1" id="map" style="overflow: hidden;"></div>
+					    </div>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+				</div>
+			</div>
+		</main>
+		<script src="js/app.js"></script>
+		<script
+			async
+			defer
+			src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&libraries=places,geometry&callback=initMap"
+		></script>
+	</body>
 </html>
+<!--  -->

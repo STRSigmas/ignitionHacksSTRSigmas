@@ -1,11 +1,11 @@
 let map;
 let service;
+let geocoder;
 
-// map initialization
 function initMap() {
     console.log("initializing map");
     map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 43.6532, lng: -79.3832 }, // default to toronto
+        center: { lat: 43.6532, lng: -79.3832 },
         zoom: 13
     });
 
