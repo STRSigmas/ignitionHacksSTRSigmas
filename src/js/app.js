@@ -1,5 +1,7 @@
 let map;
 let service;
+let geocoder;
+let autocompleteService
 
 // map initialization
 function initMap() {
@@ -11,13 +13,51 @@ function initMap() {
 
     service = new google.maps.places.PlacesService(map);
     geocoder = new google.maps.Geocoder();
+    autocompleteService = new google.maps.places.AutocompleteService();
+    console.log("map initialized. geocoder and autocomplete service ready");
+
+    document.getElementById('findSpotsBtn').addEventListener('click', findStudySpots);
+    document.getElementById('useLocationBtn').addEventListener('click', useCurrentLocation);
+    document.getElementById('addressInput').addEventListener('input', handleAddressInput);
+
+    // hide dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+        const dropdown = document.getElementById('autocompleteDropdown');
+        const addressInput = document.getElementById('addressInput');
+        if (!dropdown.contains(event.target) && event.target !== addressInput) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    // detail modal pops up when clicking on a location
+    const modal = document.getElementById("detailModal");
+    const closeBtn = modal.querySelector(".close");
+    closeBtn.addEventListener("click", () => {
+        modal.classList.add("hidden");
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.classList.add("hidden");
+        }
+    }); 
+
 }
 // address input handling
+function handleAddressInput() {
+
+}
 // address autocomplete display
 // handle autocomplete selection
 // geocode selected address
 // start finding study locations
+function findStudySpots() {
+
+}
 // use current location
+function useCurrentLocation() {
+
+}
 // search for study locations
 // acquire specific location details
 // calculate distance
