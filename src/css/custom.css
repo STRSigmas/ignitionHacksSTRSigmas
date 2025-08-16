@@ -109,6 +109,8 @@ html, body {
 .spots-list {
     padding: 1rem;
     min-height: calc(100vh - 400px);
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 .placeholder {
