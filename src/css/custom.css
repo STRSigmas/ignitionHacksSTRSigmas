@@ -11,11 +11,6 @@ html, body {
     height: 100% !important;
 }
 
-#map {
-    flex: 2;
-    min-height: 500px;
-}
-
 .autocomplete-dropdown {
     position: absolute;
     top: 100%;
