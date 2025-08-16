@@ -1,9 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import{ getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
+import{ getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBuj2S9dq0kJst8UeBu1s9MCtN8xgCY3MQ",
+  apiKey: "FIREBASE_API_KEY",
   authDomain: "login-215dc.firebaseapp.com",
   projectId: "login-215dc",
   storageBucket: "login-215dc.firebasestorage.app",

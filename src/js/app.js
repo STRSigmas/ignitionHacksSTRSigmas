@@ -135,10 +135,9 @@ function geocodeSelectedAddress(address) {
             map.setZoom(15);
             
             // clear previous user location marker
-            markers.forEach((marker, index) => {
+            markers.forEach(marker => {
                 if (marker.getTitle() === 'Your Location') {
                     marker.setMap(null);
-                    markers.splice(index, 1); // remove from array
                 }
             });
             
@@ -204,10 +203,9 @@ function useCurrentLocation() {
                 map.setCenter(userLocation);
                 
                 // clear previous user location marker
-                markers.forEach((marker, index) => {
+                markers.forEach(marker => {
                     if (marker.getTitle() === 'Your Location') {
                         marker.setMap(null);
-                        markers.splice(index, 1); // remove from array
                     }
                 });
                 
@@ -250,7 +248,7 @@ function searchForStudySpots() {
     studySpots = [];
     const searchPromises = [];
 
-    const placeTypes = ['library', 'cafe', 'university', 'book_store', 'restaurant', 'school', 'lodging', 'establishment'];
+    const placeTypes = ['library', 'cafe', 'university', 'school', 'lodging', 'establishment'];
 
     const radiusSelect = document.getElementById('radiusSelect');
     const radiusValue = radiusSelect ? parseInt(radiusSelect.value, 10) : NaN;
@@ -262,13 +260,11 @@ function searchForStudySpots() {
             location: userLocation,
             radius: selectedRadius,
             type: type,
-            keyword: type === 'cafe' ? 'wifi quiet study' :
-                    type === 'library' ? 'quiet study book books' :
-                    type === 'university' ? 'study group' :
-                    type === 'book_store' ? 'reading nook' :
-                    type === 'restaurant' ? 'study friendly' :
-                    type === 'school' ? 'tutoring' :
-                    type === 'lodging' ? 'lobby study retreat wifi' :
+            keyword: type === 'cafe' ? 'cafe coffee' :
+                    type === 'library' ? 'book books read reading' :
+                    type === 'university' ? 'university' :
+                    type === 'school' ? 'tutoring enroll learn' :
+                    type === 'lodging' ? 'lobby rooms' :
                     type === 'establishment' ? 'coworking study spot space' : 'study'
         };
 
@@ -281,7 +277,7 @@ function searchForStudySpots() {
                         if (!studySpots.find(spot => spot.place_id === place.place_id)) { // avoid duplicates
                             studySpots.push({
                                 ...place,
-                                placeType: place
+                                placeType: type  // Store the type string, not the place object
                             });
                         }
                     });
@@ -437,13 +433,36 @@ function calculateScore(place) {
                'No specific study features mentioned in reviews'
     };
 
-    // implement all other scoring later
+    // place type scoring with priorties
+    const typeScores = {
+        'library': 25,
+        'cafe': 20,
+        'university': 15,
+        'lodging': 12,
+        'school': 8,
+        'establishment': 3
+    };
+    // determine type score and add to score accumulator
+    const typeScore = typeScores[place.placeType] || 2;
+    score += typeScore;
+    // add type to factors
+    factors.placeType = {
+        value: place.placeType.charAt(0).toUpperCase() + place.placeType.slice(1)
+    };
+
+    // scoring based on hours (if it's open or closed rn)
+    const isOpen = place.opening_hours?.open_now;
+    const statusScore = isOpen ? 5 : 0;
+    score += statusScore;
+    factors.openStatus = {
+        value: isOpen ? 'Currently open' : 'Currently closed'
+    };
     
     return {
         totalScore: Math.min(100, score),
         factors: factors,
         distance: distance,
-        // reviewAnalysis: reviewAnalysis
+        reviewAnalysis: reviewAnalysis
     };
 }
 // get color corresponding to score (range from red to green)
@@ -488,20 +507,127 @@ function displaySpots(spots) {
 
     // polish inner html later
     spotsList.innerHTML = spots.map((spot, index) => `
-        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 5px;">
+        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="panToLocation('${spot.place_id}')">
             <h4>${spot.name || 'Unknown Name'}</h4>
             <p><strong>Score:</strong> ${spot.scoreData.totalScore.toFixed(1)}/100</p>
             <p><strong>Distance:</strong> ${spot.scoreData.distance.toFixed(2)} km</p>
             <p><strong>Rating:</strong> ${spot.rating || 'No rating'} ⭐ (${spot.user_ratings_total || 0} reviews)</p>
             <p><strong>Address:</strong> ${spot.vicinity || 'No address'}</p>
-            <p><strong>Type:</strong> ${spot.types ? spot.types[0] : 'Unknown'}</p>
+            <p><strong>Type:</strong> ${spot.placeType}</p>
+            <p><strong>Status:</strong> ${spot.opening_hours ? (spot.opening_hours.open_now ? '🟢 Open Now' : '🔴 Closed') : '❓ Hours Unknown'}</p>
         </div>
     `).join('');
     return;
 }
 // display spots on map
 function addMarkersToMap(spots) {
+    // clear only study spot markers, preserve user location marker
+    markers.forEach(marker => {
+        if (marker.getTitle() !== 'Your Location') {
+            marker.setMap(null);
+        }
+    });
+    // keep only the user location marker
+    markers = markers.filter(marker => marker.getTitle() === 'Your Location');
     
+    // add markers for each study spot
+    spots.forEach((spot, index) => {
+        const score = spot.scoreData.totalScore.toFixed(0);
+        const color = getScoreColor(score);
+        
+        const marker = new google.maps.Marker({
+            position: spot.geometry.location,
+            map: map,
+            title: `${spot.name} (Score: ${score}/100)`,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 12,
+                fillColor: color,
+                fillOpacity: 0.9,
+                strokeColor: '#ffffff',
+                strokeWeight: 2
+            }
+        });
+        
+        // create info window for each marker
+        const infoWindow = new google.maps.InfoWindow({
+            content: createInfoWindowContent(spot)
+        });
+        
+        // add click listener to marker to open info window
+        marker.addListener('click', () => {
+            markers.forEach(m => {
+                if (m.infoWindow) m.infoWindow.close();
+            });
+            infoWindow.open(map, marker);
+        });
+        
+        marker.infoWindow = infoWindow;
+        markers.push(marker);
+    });
 }
 // pan to location on map when clicked
+function panToLocation(placeId) {
+    const spot = studySpots.find(s => s.place_id === placeId);
+    if (!spot) return;
+    
+    const marker = markers.find(m => 
+        m.getPosition().lat() === spot.geometry.location.lat() &&
+        m.getPosition().lng() === spot.geometry.location.lng()
+    );
+    
+    map.panTo(spot.geometry.location);
+    map.setZoom(16);
+    
+    if (marker && marker.infoWindow) {
+        markers.forEach(m => {
+            if (m.infoWindow) m.infoWindow.close();
+        });
+        marker.infoWindow.open(map, marker);
+    }
+}
 // display detailed location information on map popup when clicked
+function createInfoWindowContent(spot) {
+    const score = spot.scoreData.totalScore.toFixed(0);
+    const color = getScoreColor(score);
+    const factors = spot.scoreData.factors;
+    
+    return `
+        <div style="max-width: 300px; font-family: Arial, sans-serif;">
+            <h3 style="margin: 0 0 10px 0; color: #333;">${spot.name}</h3>
+            
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <span style="background-color: ${color}; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold; margin-right: 10px;">
+                    ${score}/100
+                </span>
+                <span style="color: #666;">Study Score</span>
+            </div>
+            
+            <div style="margin-bottom: 8px;">
+                <strong>📍 Distance:</strong> ${factors.distance?.value || 'Unknown'}
+            </div>
+            
+            <div style="margin-bottom: 8px;">
+                <strong>⭐ Rating:</strong> ${factors.rating?.value || 'No rating'}
+            </div>
+            
+            <div style="margin-bottom: 8px;">
+                <strong>🏢 Type:</strong> ${factors.placeType?.value || 'Unknown'}
+            </div>
+            
+            <div style="margin-bottom: 8px;">
+                <strong>🕒 Status:</strong> ${factors.openStatus?.value || 'Unknown'}
+            </div>
+            
+            ${factors.studyFriendly?.value && factors.studyFriendly.value !== 'No specific study features mentioned in reviews' ? 
+                `<div style="margin-bottom: 8px;">
+                    <strong>📚 Study Features:</strong> ${factors.studyFriendly.value}
+                </div>` : ''
+            }
+            
+            ${spot.vicinity ? `<div style="margin-bottom: 8px; color: #666; font-size: 12px;">${spot.vicinity}</div>` : ''}
+            
+            ${spot.website ? `<div style="margin-top: 10px;"><a href="${spot.website}" target="_blank" style="color: #007bff;">Visit Website</a></div>` : ''}
+        </div>
+    `;
+}
