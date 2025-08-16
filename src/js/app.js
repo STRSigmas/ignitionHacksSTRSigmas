@@ -140,12 +140,12 @@ function geocodeSelectedAddress(address) {
                 title: 'Your Location',
                 icon: {
                     url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="blue">
                             <circle cx="12" cy="12" r="8"/>
                             <circle cx="12" cy="12" r="3" fill="white"/>
                         </svg>
                     `),
-                    scaledSize: new google.maps.Size(24, 24)
+                    scaledSize: new google.maps.Size(48, 48)
                 }
             });
             
