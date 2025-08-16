@@ -1,10 +1,9 @@
 import { auth, db } from "./firebaseConfig.js"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import{ setDoc, doc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import{ setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
 
 function showMessage(message, divId){
   var messageDiv = document.getElementById("messageDiv");
-  // messageDiv.style.display="block";
   messageDiv.innerHTML=message;
   messageDiv.style.opacity=1;
   setTimeout(function(){
@@ -21,9 +20,6 @@ function showMessage(message, divId){
   const firstName = document.getElementById('fName').value;
   const lastName = document.getElementById('lName').value;
   const username = document.getElementById('username').value;
-
-  const auth = getAuth();
-  const db = getFirestore();
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(userCredential => {
@@ -84,9 +80,6 @@ function showMessage(message, divId){
     });
 });
 
-const auth = getAuth();
-const db = getFirestore();
-
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
@@ -112,4 +105,44 @@ onAuthStateChanged(auth, async (user) => {
       usernameSpan.textContent = "";
     }
   }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const levelOptions = document.querySelectorAll('.level-option');
+    const levelButton = document.getElementById('levelDropdown');
+    let selectedLevel = '';
+
+    if (levelButton && levelOptions.length > 0) {
+        levelOptions.forEach((option) => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                levelButton.textContent = this.textContent;
+                selectedLevel = this.getAttribute('data-value');
+                
+                console.log('Selected level:', selectedLevel);
+            });
+        });
+    }
+
+    const signInButton = document.getElementById('signInButton');
+    const signUpButton = document.getElementById('signUpButton');
+    const signUpForm = document.getElementById('signup');
+    const signInForm = document.getElementById('signIn');
+
+    if (signInButton && signUpForm && signInForm) {
+        signInButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            signUpForm.style.display = 'none';
+            signInForm.style.display = 'block';
+        });
+    }
+
+    if (signUpButton && signInForm && signUpForm) {
+        signUpButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            signInForm.style.display = 'none';
+            signUpForm.style.display = 'block';
+        });
+    }
 });
