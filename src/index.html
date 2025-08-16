@@ -7,65 +7,78 @@
         <script src="bootstrap/bootstrap.bundle.min.js"></script>
         <script src="js/index.js"></script>
         <script src="script.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&loading=async&libraries=maps&v=beta" defer></script>
     </head>
     <body class="bg-dark">
         <main>
-            <div class="container-fluid">
+            <nav class="navbar navbar-dark bg-dark navbar-expand-lg py-2 shadow">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-0 ms-3 fw-bold fs-3">StudyLocal</span>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <div class="navbar-nav ms-auto">
+                            <a class="nav-link active fw-bold fs-4">Home</a>
+                            <a class="nav-link fw-bold fs-4">Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="container-fluid min-vh-100 d-flex flex-column">
                 <div class="row justify-content-evenly">
                     <div class="col-12 justify-content-center align-items-center text-center">
-                        <h1 class="text-light title-text mt-5 fw-bold mb-5">StudyLocal</h1>
+                        <h1 class="text-light title-text mt-4 fw-bold">StudyLocal</h1>
                     </div>
                 </div>
                 <div class="row justify-content-evenly">
                     <div class="col-12">
-                        <div class="selection-card py-5 px-5 mx-2 mx-md-5">
+                        <div class="selection-card py-4 px-4 mx-2 mx-md-5 rounded-5">
                             <div class="d-flex flex-wrap align-items-center gap-5">
-                                <input type="number" class="form-control fs-2 w-auto" placeholder="Maximum distance" aria-label="Maximum distance" aria-describedby="basic-addon1">
+                                <input type="number" class="form-control fs-4 w-auto" placeholder="Maximum distance" aria-label="Maximum distance" aria-describedby="basic-addon1">
                                 <div class="dropdown" data-bs-theme="dark">
-                                    <button class="btn btn-primary dropdown-toggle fs-2 rounded-3" type="button" data-bs-toggle="dropdown" style="max-width: 16rem; overflow-x: hidden;" aria-expanded="false" id="multiSelectDropdown">Location types</button>
+                                    <button class="btn btn-primary dropdown-toggle fs-4 rounded-3" type="button" data-bs-toggle="dropdown" style="max-width: 16rem; overflow-x: hidden;" aria-expanded="false" id="multiSelectDropdown">Location types</button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <label class="fs-2 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="Library">Library</label>
+                                            <label class="fs-4 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="Library">Library</label>
                                         </li>
                                         <li>
-                                            <label class="fs-2 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="Cafe">Cafe</label>
+                                            <label class="fs-4 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="Cafe">Cafe</label>
                                         </li>
                                         <li>
-                                            <label class="fs-2 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="Park">Park</label>
+                                            <label class="fs-4 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="Park">Park</label>
                                         </li>
                                         <li>
-                                            <label class="fs-2 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="University">University</label>
+                                            <label class="fs-4 d-flex align-items-center ms-2 me-3"><input type="checkbox" class="locationDrop me-2" value="University">University</label>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="form-check d-flex align-items-center">
                                     <div class="form-check d-flex align-items-center">
                                         <input class="form-check-input" type="checkbox" value="" id="checkWifi">
-                                        <label class="form-check-label fs-2 ms-2" for="checkWifi">Wifi</label>
+                                        <label class="form-check-label fs-4 ms-2" for="checkWifi">Wifi</label>
                                     </div>
                                 </div>
                                 <div class="form-check d-flex align-items-center">
                                     <div class="form-check d-flex align-items-center">
                                         <input class="form-check-input" type="checkbox" value="" id="checkOpen">
-                                        <label class="form-check-label fs-2 ms-2" for="checkOpen">Open now</label>
+                                        <label class="form-check-label fs-4 ms-2" for="checkOpen">Open now</label>
                                     </div>
                                 </div>
                                 <div class="form-check d-flex align-items-center">
                                     <div class="form-check d-flex align-items-center">
                                         <input class="form-check-input" type="checkbox" value="" id="checkAccessible">
-                                        <label class="form-check-label fs-2 ms-2" for="checkAccessible">Accessible</label>
+                                        <label class="form-check-label fs-4 ms-2" for="checkAccessible">Accessible</label>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <label class="form-label fs-4">Other students</label>
                                     <div class="d-flex align-items-center" style="gap: 0.5rem">
-                                        <input type="number" class="form-control fs-2" style="width: 200px;" placeholder="Minimum" aria-label="Minimum distance" aria-describedby="basic-addon1">
-                                        <input type="number" class="form-control fs-2" style="width: 200px;" placeholder="Maximum" aria-label="Maximum distance" aria-describedby="basic-addon1">
+                                        <input type="number" class="form-control fs-4" style="width: 200px;" placeholder="Minimum" aria-label="Minimum distance" aria-describedby="basic-addon1">
+                                        <input type="number" class="form-control fs-4" style="width: 200px;" placeholder="Maximum" aria-label="Maximum distance" aria-describedby="basic-addon1">
                                     </div>
                                 </div>
                                 <div class="dropdown" data-bs-theme="dark">
-                                    <button class="btn btn-primary dropdown-toggle fs-2 rounded-3" style="max-width: 16rem; overflow-x: hidden;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="multiSelectSubjectDropdown">Subjects</button>
+                                    <button class="btn btn-primary dropdown-toggle fs-4 rounded-3" style="max-width: 16rem; overflow-x: hidden;" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="multiSelectSubjectDropdown">Subjects</button>
                                     <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
                                         <li class="px-3 py-2 sticky-top bg-primary dropdown-search" style="z-index:1;">
                                             <input type="text" class="form-control fs-4" id="dropdownSubjectSearch" placeholder="Search">
@@ -162,14 +175,54 @@
                         </div>
                     </div>
                 </div>
-                <div class="row flex-grow-1 h-100">
-                    <div class="col-8 d-flex flex-column h-100">
-                        <iframe class="flex-grow-1 mt-5 ms-5 w-100" style="border-radius:10px" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCWw9WQ-NZvohw6cyog_E-SB_GxCCs8hr0&q=Space+Needle,Seattle+WA"></iframe>
+                <div class="row justify-content-evenly mt-4">
+                    <div class="col-8 d-flex justify-content-end position-relative">
+                        <input
+                            type="text"
+                            class="form-control fs-4 w-75"
+                            placeholder="Enter address here"
+                            aria-label="Enter address here"
+                            aria-describedby="basic-addon1"
+                            id="addressInput"
+                        />
+                        <div id="autocompleteDropdown" class="autocomplete-dropdown hidden"></div>
                     </div>
                     <div class="col-4">
+                        <div id="useLocationBtn" class="btn btn-primary fs-4 me-5">Use current location</div>
                     </div>
                 </div>
+                <div class="row justify-content-evenly mt-4" style="min-height: 0;">
+                    <div class="col-12 d-flex justify-content-center" style="min-height: 0;">
+                        <div class="btn btn-primary fs-4 w-25" id="findSpotsBtn">Find spots now</div>
+                    </div>
+                </div>
+				<div class="row mt-4 flex-grow-1 h-100 mapContainer">
+                    <div class="col-7 ps-5 d-flex flex-column mapContainer">
+						<div class="rounded-5 flex-grow-1 mapContainer" id="map"></div>
+                    </div>
+                    <div class="col-5">
+                        <div class="sidebar rounded-5">
+                            <h2 class="fs-3">Study Spots</h2>
+                            <div id="spotsList" class="spots-list">
+                                <p class="fs-4 placeholder">Click "Find Study Spots" to discover locations near you</p>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</main>
+        <div id="detailModal" class="modal hidden">
+            <div id="modal-content">
+                <span class="close">&times;</span>
+                <h3 class="fs-4" id="modalTitle"></h3>
+                <div id="modalBody"></div>
             </div>
-        </main>
-    </body>
+        </div>
+		<script src="js/app.js"></script>
+		<script
+			async
+			defer
+			src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&libraries=places,geometry&callback=initMap"
+		></script>
+	</body>
 </html>

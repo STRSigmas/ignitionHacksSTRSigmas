@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node ../IgnitionHacksSTRSigmas/src/build/copyToDocs.js"
+    "build": "node src/build/copyToDocs.js"
   },
   "repository": {
     "type": "git",
