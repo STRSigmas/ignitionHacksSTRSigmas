@@ -1,26 +1,10 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import{getFirestore, setDoc, doc} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBuj2S9dq0kJst8UeBu1s9MCtN8xgCY3MQ",
-  authDomain: "login-215dc.firebaseapp.com",
-  projectId: "login-215dc",
-  storageBucket: "login-215dc.firebasestorage.app",
-  messagingSenderId: "629611864275",
-  appId: "1:629611864275:web:007307fe5bbe5e763ff426"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-export const auth = getAuth(app)
-export const db = getFirestore(app)
+import { auth, db } from "./firebaseConfig.js"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import{ setDoc, doc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
 
 function showMessage(message, divId){
-  var messageDiv = document.getElementById(divId);
-  messageDiv.style.display="block";
+  var messageDiv = document.getElementById("messageDiv");
+  // messageDiv.style.display="block";
   messageDiv.innerHTML=message;
   messageDiv.style.opacity=1;
   setTimeout(function(){
@@ -35,9 +19,6 @@ function showMessage(message, divId){
     const password = document.getElementById('rPassword').value;
     const firstName = document.getElementById('fName').value;
     const lastName = document.getElementById('lName').value;
- 
-    const auth = getAuth();
-    const db = getFirestore();
 
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential)=>{
@@ -47,7 +28,7 @@ function showMessage(message, divId){
         firstName: firstName,
         lastName: lastName
       };
-      showMessage('Account Created Successfully', 'signUpMessage');
+      showMessage('Account created successfully', 'signUpMessage');
       const docRef=doc(db, "users", user.uid);
       setDoc(docRef, userData)
       .then(()=>{
@@ -60,10 +41,10 @@ function showMessage(message, divId){
     .catch((error)=>{
       const errorCode=error.code;
       if(errorCode=='auth/email-already-in-use'){
-        showMessage('Email Address Already Exists !!!', 'signUpMessage');
+        showMessage('Email already exists', 'signUpMessage');
       }
       else {
-        showMessage('unable to create User', 'signUpMessage');
+        showMessage('Unable to create user', 'signUpMessage');
       }
     })
   });
@@ -73,11 +54,11 @@ function showMessage(message, divId){
     event.preventDefault();
     const email= document.getElementById('email').value;
     const password= document.getElementById('password').value;
-    const auth=getAuth();
 
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential)=>{
-      showMessage('login is successful', 'signInMessage');
+      console.log("login success")
+      showMessage('Login successful', 'signInMessage');
       const user=userCredential.user;
       localStorage.setItem('loggedInUserId', user.uid);
       window.location.href='index.html';
@@ -85,10 +66,10 @@ function showMessage(message, divId){
     .catch((error)=>{
       const errorCode = error.code;
       if (errorCode==='auth/invalid-credential'){
-        showMessage('Incorrect Email or Password', 'signInMessage');
+        showMessage('Incorrect credentials', 'signInMessage');
       }
       else{
-        showMessage('Account dies not Exist', 'signInMessage');
+        showMessage('Account does not exist', 'signInMessage');
       }
     })
   })
