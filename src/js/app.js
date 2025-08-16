@@ -272,10 +272,65 @@ function getDetailedPlaceInfo() {
     });
 }
 // calculate distance
+function calculateDistance(lat1, lng1, lat2, lng2) {
+    // use the haversine formula; distance between two points on a sphere depending on lat/long
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng/2) * Math.sin(dLng/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
 // analyze study location reviews
 // calculate score for study location hours
 // calculate general score for study location
+function calculateScore(place) {
+    const distance = calculateDistance(
+        userLocation.lat, userLocation.lng,
+        place.geometry.location.lat(), place.geometry.location.lng()
+    );
+    
+    let score = 0;
+    const factors = {};
+    
+    // account for radius selection in distance scoring
+    const radiusSelect = document.getElementById('radiusSelect');
+    const radiusValue = radiusSelect ? parseInt(radiusSelect.value, 10) : 5; // default to 5km
+    const searchRadius = (!isNaN(radiusValue) && radiusValue > 0) ? radiusValue : 5; // ensure valid number
+    const maxDistance = searchRadius;
+    
+    let distanceScore;
+    const optimalDistance = Math.min(2, searchRadius * 0.4); // lowkey arbitrarily chosen numbers; optimal distance is 40% of search radius or 2km, whichever is smaller
+    
+    if (distance <= optimalDistance) {
+        distanceScore = 30; // full points close locations (30)
+    } else {
+        distanceScore = Math.max(0, (maxDistance - distance) / (maxDistance - optimalDistance) * 30);
+    }
+    score += distanceScore;
+    factors.distance = {
+        value: distance.toFixed(2) + ' km away'
+    };
+
+    // implement all other scoring later
+    
+    console.log("calculated score for", place.name, ":", score);
+    return {
+        totalScore: Math.min(100, score),
+        factors: factors,
+        distance: distance,
+        // reviewAnalysis: reviewAnalysis
+    };
+}
 // get color corresponding to score (range from red to green)
+function getScoreColor(score) {
+    if (score >= 80) return '#27ae60';
+    if (score >= 60) return '#f39c12';
+    if (score >= 40) return '#e67e22';
+    return '#e74c3c';
+}
 // manage display of study locations in list and on map
 function scoreAndDisplaySpots() {
     // map study spots to their scores
