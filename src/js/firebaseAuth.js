@@ -15,15 +15,21 @@ function showMessage(message, divId){
   const signUp = document.getElementById('submitSignUp');
   signUp.addEventListener('click', (event)=>{
     event.preventDefault();
-    const email = document.getElementById('rEmail').value;
-    const password = document.getElementById('rPassword').value;
-    const firstName = document.getElementById('fName').value;
-    const lastName = document.getElementById('lName').value;
 
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential)=>{
+  const email = document.getElementById('rEmail').value;
+  const password = document.getElementById('rPassword').value;
+  const firstName = document.getElementById('fName').value;
+  const lastName = document.getElementById('lName').value;
+  const username = document.getElementById('username').value;
+
+  const auth = getAuth();
+  const db = getFirestore();
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(userCredential => {
       const user = userCredential.user;
-      const userData={
+
+      const userData = {
         email: email,
         firstName: firstName,
         lastName: lastName,
@@ -75,5 +81,35 @@ function showMessage(message, divId){
       else{
         showMessage('Account does not exist', 'signInMessage');
       }
-    })
-  })
+    });
+});
+
+const auth = getAuth();
+const db = getFirestore();
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        localStorage.setItem('loggedInUsername', userData.username || user.email);
+
+        // Optionally update UI element with id 'navbarUsername' if it exists
+        const usernameSpan = document.getElementById('navbarUsername');
+        if (usernameSpan) {
+          usernameSpan.textContent = userData.username || user.email || "User";
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching user Firestore data:", error);
+    }
+  } else {
+    // User logged out, clean up
+    localStorage.removeItem('loggedInUsername');
+    const usernameSpan = document.getElementById('navbarUsername');
+    if (usernameSpan) {
+      usernameSpan.textContent = "";
+    }
+  }
+});
