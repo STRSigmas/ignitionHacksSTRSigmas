@@ -294,10 +294,9 @@ function searchForStudySpots() {
     });
 
     Promise.all(searchPromises).then(() => { // when all promises resolve
-        console.log(studySpots.length, "study spots found");
+        console.log(studySpots.length, 'study spots found');
         getDetailedPlaceInfo();
         studySpots.forEach(element => {
-            console.log("found study spot:", element.name, "at", element.vicinity);
         });
     });
 }
@@ -342,6 +341,55 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
     return R * c;
 }
 // analyze study location reviews
+function analyzeReviewsForStudyKeywords(reviews) {
+    if (!reviews || reviews.length === 0) return { score: 0, keywords: [] }; // if no reviews, return 0 score
+
+    const studyKeywords = [
+        'wifi', 'internet', 'laptop', 'study', 'studying', 'quiet', 'peaceful',
+        'work', 'working', 'outlets', 'power', 'charging', 'table', 'desk',
+        'focused', 'concentration', 'homework', 'reading', 'library-like',
+        'cozy', 'comfortable seating', 'spacious', 'good lighting'
+    ];
+    
+    const negativeKeywords = [
+        'loud', 'noisy', 'crowded', 'busy', 'no wifi', 'poor wifi', 'slow internet',
+        'no outlets', 'uncomfortable', 'cramped', 'dark', 'distracting'
+    ];
+    
+    let positiveCount = 0;
+    let negativeCount = 0;
+    const foundKeywords = [];
+
+    // analyze each review for pos or neg keywords then add them to the corresponding counters
+    reviews.forEach(review => {
+        const text = review.text.toLowerCase();
+        
+        studyKeywords.forEach(keyword => {
+            if (text.includes(keyword)) {
+                positiveCount++;
+                if (!foundKeywords.includes(keyword)) {
+                    foundKeywords.push(keyword);
+                }
+            }
+        });
+        
+        negativeKeywords.forEach(keyword => {
+            if (text.includes(keyword)) {
+                negativeCount++;
+            }
+        });
+    });
+    
+    // calculate a net score from -15 to +15 based on the difference between pos and neg keywords
+    const netScore = Math.max(0, Math.min(15, (positiveCount - negativeCount) * 2));
+    
+    return {
+        score: netScore,
+        keywords: foundKeywords.slice(0, 5),
+        positiveCount,
+        negativeCount
+    };
+}
 // calculate score for study location hours
 // calculate general score for study location
 function calculateScore(place) {
@@ -372,9 +420,25 @@ function calculateScore(place) {
         value: distance.toFixed(2) + ' km away'
     };
 
+    // rating scoring
+    const rating = place.rating || 3;
+    const ratingScore = (rating / 5) * 25;
+    score += ratingScore;
+    factors.rating = {
+        value: rating + '/5 stars (' + (place.user_ratings_total || 0) + ' reviews)'
+    };
+
+    // review analysis scoring
+    const reviewAnalysis = analyzeReviewsForStudyKeywords(place.reviews);
+    score += reviewAnalysis.score;
+    factors.studyFriendly = {
+        value: reviewAnalysis.keywords.length > 0 ? 
+               `Study features mentioned: ${reviewAnalysis.keywords.join(', ')}` : 
+               'No specific study features mentioned in reviews'
+    };
+
     // implement all other scoring later
     
-    console.log("calculated score for", place.name, ":", score);
     return {
         totalScore: Math.min(100, score),
         factors: factors,
@@ -433,8 +497,6 @@ function displaySpots(spots) {
             <p><strong>Type:</strong> ${spot.types ? spot.types[0] : 'Unknown'}</p>
         </div>
     `).join('');
-    
-    console.log(`Displayed ${spots.length} spots in list`);
     return;
 }
 // display spots on map
