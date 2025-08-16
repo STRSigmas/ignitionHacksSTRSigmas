@@ -3,6 +3,8 @@ let service;
 let geocoder;
 let autocompleteService;
 let markers = [];
+let userLocation;
+let studySpots = [];
 
 function initMap() {
     console.log("initializing map");
@@ -11,12 +13,13 @@ function initMap() {
         zoom: 13
     });
 
-    service = new google.maps.places.PlacesService(map);
-    geocoder = new google.maps.Geocoder();
-    autocompleteService = new google.maps.places.AutocompleteService();
+    service = new google.maps.places.PlacesService(map); // for searceshing nearby plac
+    geocoder = new google.maps.Geocoder(); // for converting addresses to coordinates
+    autocompleteService = new google.maps.places.AutocompleteService(); // for address autocomplete
     console.log("map initialized. geocoder and autocomplete service ready");
 
-    // document.getElementById('findSpotsBtn').addEventListener('click', findStudySpots);
+    // add event listeners to neccessary elements
+    document.getElementById('findSpotsBtn').addEventListener('click', findStudySpots);
     document.getElementById('useLocationBtn').addEventListener('click', useCurrentLocation);
     document.getElementById('addressInput').addEventListener('input', handleAddressInput);
 
@@ -29,7 +32,7 @@ function initMap() {
         }
     });
 
-    // detail modal pops up when clicking on a location
+    // detail modal pops up in the map when clicking on a location
     const modal = document.getElementById("detailModal");
     const closeBtn = modal.querySelector(".close");
     closeBtn.addEventListener("click", () => {
@@ -46,9 +49,10 @@ function initMap() {
 
 // address input handling
 function handleAddressInput() {
-    const input = event.target.value.trim();
+    const input = event.target.value.trim(); // get the input value from the address input field
     const dropdown = document.getElementById('autocompleteDropdown');
 
+    // hide dropdown if input is too short
     if (input.length < 3) {
         dropdown.classList.add('hidden');
         return;
@@ -115,6 +119,7 @@ function geocodeSelectedAddress(address) {
         return;
     }
     
+    
     geocoder.geocode({ address: address }, (results, status) => {
         console.log('geocoding status:', status, 'results:', results);
         if (status === 'OK' && results[0]) {
@@ -123,17 +128,19 @@ function geocodeSelectedAddress(address) {
                 lng: results[0].geometry.location.lng()
             };
             
+            // pan to user location
             console.log('found location:', userLocation);
             map.setCenter(userLocation);
             map.setZoom(15);
             
-            // Clear previous user location marker
+            // clear previous user location marker
             markers.forEach(marker => {
                 if (marker.getTitle() === 'Your Location') {
                     marker.setMap(null);
                 }
             });
             
+            // add new user location marker
             new google.maps.Marker({
                 position: userLocation,
                 map: map,
@@ -156,15 +163,79 @@ function geocodeSelectedAddress(address) {
         }
     });
 }
-// start finding study locations
+// start handling finding study locations
 function findStudySpots() {
+    console.log("finding study spots");
+    const button = document.getElementById('findSpotsBtn');
+    const addressInput = document.getElementById('addressInput');
 
+    if (!userLocation) {
+        alert("Please search for a location or use your own location first.");
+        return;
+    }
+
+    button.disabled = true;
+
+    searchForStudySpots();
 }
 // use current location
 function useCurrentLocation() {
     console.log("using current location");
 }
 // search for study locations
+function searchForStudySpots() {
+    studySpots = [];
+    const searchPromises = [];
+
+    const placeTypes = ['library', 'cafe', 'university', 'book_store', 'restaurant', 'school', 'lodging', 'establishment'];
+
+    const radiusSelect = document.getElementById('radiusSelect');
+    const selectedRadius = parseInt(radiusSelect.value, 10) || 5; // default to 5 if invalid
+
+    // create a search request for each place type
+    placeTypes.forEach(type => {
+        const request = {
+            location: userLocation,
+            radius: selectedRadius,
+            type: type,
+            keyword: type === 'cafe' ? 'wifi quiet study' :
+                    type === 'library' ? 'quiet study book books' :
+                    type === 'university' ? 'study group' :
+                    type === 'book_store' ? 'reading nook' :
+                    type === 'restaurant' ? 'study friendly' :
+                    type === 'school' ? 'tutoring' :
+                    type === 'lodging' ? 'lobby study retreat wifi' :
+                    type === 'establishment' ? 'coworking study spot space' : 'study'
+        };
+
+        // put google api calls for nearbySearch in an array of promises
+        // this is to avoid using a million callbacks and so all searches happen at once
+        const promise = new Promise((resolve) => {
+            service.nearbySearch(request, (results, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    results.forEach(place => {
+                        if (!studySpots.find(spot => spot.place_id === place.place_id)) { // avoid duplicates
+                            studySpots.push({
+                                ...place,
+                                placeType: place
+                            });
+                        }
+                    });
+                }
+                resolve();
+            });
+        });
+
+        searchPromises.push(promise); // add promise to array
+    });
+
+    Promise.all(searchPromises).then(() => { // when all promises resolve
+        // getDetailedPlaceInfo();
+        studySpots.forEach(element => {
+            console.log("found study spot:", element.name, "at", element.vicinity);
+        });
+    });
+}
 // acquire specific location details
 // calculate distance
 // analyze study location reviews
