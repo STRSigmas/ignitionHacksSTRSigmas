@@ -24,6 +24,17 @@ function initMap() {
     document.getElementById('useLocationBtn').addEventListener('click', useCurrentLocation);
     document.getElementById('addressInput').addEventListener('input', handleAddressInput);
 
+    // add event listeners to location type checkboxes for filtering
+    document.querySelectorAll('.locationDrop').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            // re-display spots with new filters if we have scored spots
+            if (window.currentScoredSpots && window.currentScoredSpots.length > 0) {
+                displaySpots(window.currentScoredSpots);
+                addMarkersToMap(window.currentScoredSpots);
+            }
+        });
+    });
+
     // hide dropdown when clicking outside
     document.addEventListener('click', (event) => {
         const dropdown = document.getElementById('autocompleteDropdown');
@@ -486,6 +497,9 @@ function scoreAndDisplaySpots() {
     // sort scored spots by total score in descending order
     scoredSpots.sort((a, b) => b.scoreData.totalScore - a.scoreData.totalScore);
     
+    // store scored spots globally for filtering
+    window.currentScoredSpots = scoredSpots;
+    
     // call our functions to display the scored spots in the list and on the map
     displaySpots(scoredSpots);
     addMarkersToMap(scoredSpots);
@@ -505,8 +519,30 @@ function displaySpots(spots) {
         return;
     }
 
+    // get selected location types from dropdown
+    const selectedTypes = getSelectedLocationTypes();
+    
+    // filter spots based on selected types (if any are selected)
+    let filteredSpots = spots;
+    if (selectedTypes.length > 0) {
+        filteredSpots = spots.filter(spot => {
+            // normalize the spot's place type for comparison
+            const spotType = spot.placeType.toLowerCase();
+            return selectedTypes.some(selectedType => {
+                const normalizedSelectedType = selectedType.toLowerCase();
+                // directly compare place types
+                return spotType === normalizedSelectedType;
+            });
+        });
+    }
+
+    if (filteredSpots.length === 0) {
+        spotsList.innerHTML = '<p>No study spots match your selected filters. Try adjusting your location type preferences.</p>';
+        return;
+    }
+
     // polish inner html later
-    spotsList.innerHTML = spots.map((spot, index) => `
+    spotsList.innerHTML = filteredSpots.map((spot, index) => `
         <div style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="panToLocation('${spot.place_id}')">
             <h4>${spot.name || 'Unknown Name'}</h4>
             <p><strong>Score:</strong> ${spot.scoreData.totalScore.toFixed(1)}/100</p>
@@ -517,7 +553,15 @@ function displaySpots(spots) {
             <p><strong>Status:</strong> ${spot.opening_hours ? (spot.opening_hours.open_now ? '🟢 Open Now' : '🔴 Closed') : '❓ Hours Unknown'}</p>
         </div>
     `).join('');
+    
+    console.log(`Displayed ${filteredSpots.length} out of ${spots.length} spots after filtering`);
     return;
+}
+
+// helper function to get selected location types from dropdown
+function getSelectedLocationTypes() {
+    const checkboxes = document.querySelectorAll('.locationDrop:checked');
+    return Array.from(checkboxes).map(checkbox => checkbox.value);
 }
 // display spots on map
 function addMarkersToMap(spots) {
@@ -530,8 +574,25 @@ function addMarkersToMap(spots) {
     // keep only the user location marker
     markers = markers.filter(marker => marker.getTitle() === 'Your Location');
     
-    // add markers for each study spot
-    spots.forEach((spot, index) => {
+    // get selected location types from dropdown
+    const selectedTypes = getSelectedLocationTypes();
+    
+    // filter spots based on selected types (if any are selected)
+    let filteredSpots = spots;
+    if (selectedTypes.length > 0) {
+        filteredSpots = spots.filter(spot => {
+            // normalize the spot's place type for comparison
+            const spotType = spot.placeType.toLowerCase();
+            return selectedTypes.some(selectedType => {
+                const normalizedSelectedType = selectedType.toLowerCase();
+                // directly compare place types
+                return spotType === normalizedSelectedType;
+            });
+        });
+    }
+    
+    // add markers for each filtered study spot
+    filteredSpots.forEach((spot, index) => {
         const score = spot.scoreData.totalScore.toFixed(0);
         const color = getScoreColor(score);
         
@@ -565,6 +626,8 @@ function addMarkersToMap(spots) {
         marker.infoWindow = infoWindow;
         markers.push(marker);
     });
+    
+    console.log(`Displayed ${filteredSpots.length} out of ${spots.length} markers after filtering`);
 }
 // pan to location on map when clicked
 function panToLocation(placeId) {
