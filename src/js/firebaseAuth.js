@@ -19,8 +19,8 @@ function showMessage(message, divId){
   const password = document.getElementById('rPassword').value;
   const firstName = document.getElementById('fName').value;
   const lastName = document.getElementById('lName').value;
-  const username = document.getElementById('username').value;
-
+  const username = document.getElementById('uName').value;
+  const level = document.getElementById("levelDropdown").textContent;
   createUserWithEmailAndPassword(auth, email, password)
     .then(userCredential => {
       const user = userCredential.user;
@@ -30,9 +30,10 @@ function showMessage(message, divId){
         firstName: firstName,
         lastName: lastName,
         subjects: [],
+        username: username,
         anonymous: true,
         description: "",
-        level: 0
+        level: level
       };
       showMessage('Account created successfully', 'signUpMessage');
       const docRef=doc(db, "users", user.uid);
@@ -108,41 +109,13 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    const levelOptions = document.querySelectorAll('.level-option');
-    const levelButton = document.getElementById('levelDropdown');
-    let selectedLevel = '';
+  const levelOptions = document.querySelectorAll('.level-option');
+  const levelButton = document.getElementById('levelDropdown');
 
-    if (levelButton && levelOptions.length > 0) {
-        levelOptions.forEach((option) => {
-            option.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                levelButton.textContent = this.textContent;
-                selectedLevel = this.getAttribute('data-value');
-                
-                console.log('Selected level:', selectedLevel);
-            });
-        });
-    }
-
-    const signInButton = document.getElementById('signInButton');
-    const signUpButton = document.getElementById('signUpButton');
-    const signUpForm = document.getElementById('signup');
-    const signInForm = document.getElementById('signIn');
-
-    if (signInButton && signUpForm && signInForm) {
-        signInButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            signUpForm.style.display = 'none';
-            signInForm.style.display = 'block';
-        });
-    }
-
-    if (signUpButton && signInForm && signUpForm) {
-        signUpButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            signInForm.style.display = 'none';
-            signUpForm.style.display = 'block';
-        });
-    }
+  levelOptions.forEach((button) => {
+    button.addEventListener("click", function(e) {
+      e.preventDefault()
+      levelButton.textContent = this.textContent
+    })
+  })
 });
