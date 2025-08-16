@@ -185,7 +185,65 @@ function findStudySpots() {
 }
 // use current location
 function useCurrentLocation() {
-    console.log("using current location");
+    // const loading = document.getElementById('loading');
+    const button = document.getElementById('findSpotsBtn');
+    const addressInput = document.getElementById('addressInput');
+    
+    // loading.classList.remove('hidden');
+    button.disabled = true;
+    addressInput.value = '';
+    
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                
+                map.setCenter(userLocation);
+                
+                // clear previous user location marker
+                markers.forEach((marker, index) => {
+                    if (marker.getTitle() === 'Your Location') {
+                        marker.setMap(null);
+                        markers.splice(index, 1); // remove from array
+                    }
+                });
+                
+                // add new user location marker
+                const userMarker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    title: 'Your Location',
+                    icon: {
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="blue">
+                                <circle cx="12" cy="12" r="8"/>
+                                <circle cx="12" cy="12" r="3" fill="white"/>
+                            </svg>
+                        `),
+                        scaledSize: new google.maps.Size(48, 48)
+                    }
+                });
+                
+                // add to markers array so it can be cleared later
+                markers.push(userMarker);
+                
+                searchForStudySpots();
+            },
+            (error) => {
+                console.error('geolocation error:', error);
+                alert('Unable to get your location. Please enter an address manually.');
+                // loading.classList.add('hidden');
+                button.disabled = false;
+            }
+        );
+    } else {
+        alert('Geolocation is not supported by this browser. Please enter an address manually.');
+        // loading.classList.add('hidden');
+        button.disabled = false;
+    }
 }
 // search for study locations
 function searchForStudySpots() {
