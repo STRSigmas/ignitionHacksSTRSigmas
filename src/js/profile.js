@@ -1,3 +1,9 @@
+import { auth, db } from "./firebaseConfig.js"
+
+if (localStorage.getItem("loggedInUserId") == null) {
+    window.location.href = "register.html"
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     const chBoxes = document.querySelectorAll('.dropdown-menu input.subjectProfileDrop[type="checkbox"]')
     const dpBtn = document.getElementById("multiSelectSubjectProfileDropdown")
