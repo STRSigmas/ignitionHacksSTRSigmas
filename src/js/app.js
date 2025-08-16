@@ -708,9 +708,8 @@ function startStudying(placeId, placeName) {
         alert('Location not found');
         return;
     }
-
+    localStorage.setItem("selectedLocationId", placeId)
+    window.location.href = "startStudying.html"
     // pan to the location on the map
     panToLocation(placeId);
-    
-    
 }
