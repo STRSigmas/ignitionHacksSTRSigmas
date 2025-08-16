@@ -1,5 +1,5 @@
 import { auth, db } from "./firebaseConfig.js"
-import { collection, addDoc, getDocs } from "firebase/firestore"
+import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
 
 if (localStorage.getItem("loggedInUserId") == null) {
     window.location.href = "register.html"
