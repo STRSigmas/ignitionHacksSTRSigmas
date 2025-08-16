@@ -1,8 +1,19 @@
 import { auth, db } from "./firebaseConfig.js"
-import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
+import { collection, addDoc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
 
 if (localStorage.getItem("loggedInUserId") == null) {
     window.location.href = "register.html"
+}
+
+
+async function editData(userId, newData) {
+    try {
+        const userRef = doc(db, "users", userId);
+        await updateDoc(userRef, newData);
+        console.log("Document updated successfully");
+    } catch (e) {
+        console.error("Error updating document: ", e);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -20,7 +31,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 selectedText += checkbox.value + ", "
             }
         })
-
+        
+        editData(localStorage.getItem("loggedInUserId"), )
         dpBtn.innerText = selected.length > 0 ? selectedText.slice(0, -2) : "Your subjects"
     }
 
