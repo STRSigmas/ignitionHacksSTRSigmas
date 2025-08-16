@@ -190,7 +190,8 @@ function searchForStudySpots() {
     const placeTypes = ['library', 'cafe', 'university', 'book_store', 'restaurant', 'school', 'lodging', 'establishment'];
 
     const radiusSelect = document.getElementById('radiusSelect');
-    const selectedRadius = parseInt(radiusSelect.value, 10) || 5; // default to 5 if invalid
+    const radiusValue = radiusSelect ? parseInt(radiusSelect.value, 10) : NaN;
+    const selectedRadius = (!isNaN(radiusValue) && radiusValue > 0) ? Math.min(1000 * radiusValue, 5000) : 5000; // default to 5km, cap at 5km
 
     // create a search request for each place type
     placeTypes.forEach(type => {
@@ -230,6 +231,7 @@ function searchForStudySpots() {
     });
 
     Promise.all(searchPromises).then(() => { // when all promises resolve
+        console.log(studySpots.length, "study spots found");
         // getDetailedPlaceInfo();
         studySpots.forEach(element => {
             console.log("found study spot:", element.name, "at", element.vicinity);
