@@ -5,6 +5,7 @@ let autocompleteService;
 let markers = [];
 let userLocation;
 let studySpots = [];
+let autocompleteResults = [];
 
 function initMap() {
     console.log("initializing map");
@@ -134,14 +135,15 @@ function geocodeSelectedAddress(address) {
             map.setZoom(15);
             
             // clear previous user location marker
-            markers.forEach(marker => {
+            markers.forEach((marker, index) => {
                 if (marker.getTitle() === 'Your Location') {
                     marker.setMap(null);
+                    markers.splice(index, 1); // remove from array
                 }
             });
             
             // add new user location marker
-            new google.maps.Marker({
+            const userMarker = new google.maps.Marker({
                 position: userLocation,
                 map: map,
                 title: 'Your Location',
@@ -155,6 +157,9 @@ function geocodeSelectedAddress(address) {
                     scaledSize: new google.maps.Size(48, 48)
                 }
             });
+            
+            // add to markers array so it can be cleared later
+            markers.push(userMarker);
             
             console.log(`location set: ${results[0].formatted_address}`);
         } else {
@@ -232,20 +237,84 @@ function searchForStudySpots() {
 
     Promise.all(searchPromises).then(() => { // when all promises resolve
         console.log(studySpots.length, "study spots found");
-        // getDetailedPlaceInfo();
+        getDetailedPlaceInfo();
         studySpots.forEach(element => {
             console.log("found study spot:", element.name, "at", element.vicinity);
         });
     });
 }
 // acquire specific location details
+function getDetailedPlaceInfo() {
+    // create a detail promise for each study spot. the details are listed in the fields property in the request
+    const detailPromises = studySpots.map(spot => {
+        return new Promise((resolve) => { 
+            const request = {
+                placeId: spot.place_id,
+                fields: [
+                    'name', 'rating', 'user_ratings_total', 'price_level',
+                    'opening_hours', 'formatted_phone_number', 'website',
+                    'reviews', 'types', 'editorial_summary', 'business_status'
+                ]
+            };
+            
+            // use the google places service to get details for each spot
+            service.getDetails(request, (place, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    Object.assign(spot, place);
+                }
+                resolve();
+            });
+        });
+    });
+    
+    Promise.all(detailPromises).then(() => { // when all promises resolve
+        scoreAndDisplaySpots();
+    });
+}
 // calculate distance
 // analyze study location reviews
 // calculate score for study location hours
 // calculate general score for study location
 // get color corresponding to score (range from red to green)
 // manage display of study locations in list and on map
+function scoreAndDisplaySpots() {
+    // map study spots to their scores
+    const scoredSpots = studySpots.map(place => {
+        const scoreData = calculateScore(place);
+        return {
+            ...place,
+            scoreData: scoreData
+        };
+    });
+    
+    // sort scored spots by total score in descending order
+    scoredSpots.sort((a, b) => b.scoreData.totalScore - a.scoreData.totalScore);
+    
+    // call our functions to display the scored spots in the list and on the map
+    displaySpots(scoredSpots);
+    addMarkersToMap(scoredSpots);
+    
+    // manage loading ui elements
+    // const loading = document.getElementById('loading');
+    const button = document.getElementById('findSpotsBtn');
+    // loading.classList.add('hidden');
+    button.disabled = false;
+}
 // display spots in list
+function displaySpots(spots) {
+    const spotsList = document.getElementById('spotsList');
+    
+    if (spots.length === 0) {
+        spotsList.innerHTML = '<p>No study spots found nearby. Try a different location.</p>';
+        return;
+    }
+
+    // write inner html later
+    return;
+}
 // display spots on map
+function addMarkersToMap(spots) {
+    
+}
 // pan to location on map when clicked
 // display detailed location information on map popup when clicked
