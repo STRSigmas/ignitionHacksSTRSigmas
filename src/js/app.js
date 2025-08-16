@@ -364,7 +364,19 @@ function displaySpots(spots) {
         return;
     }
 
-    // write inner html later
+    // polish inner html later
+    spotsList.innerHTML = spots.map((spot, index) => `
+        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 5px;">
+            <h4>${spot.name || 'Unknown Name'}</h4>
+            <p><strong>Score:</strong> ${spot.scoreData.totalScore.toFixed(1)}/100</p>
+            <p><strong>Distance:</strong> ${spot.scoreData.distance.toFixed(2)} km</p>
+            <p><strong>Rating:</strong> ${spot.rating || 'No rating'} ⭐ (${spot.user_ratings_total || 0} reviews)</p>
+            <p><strong>Address:</strong> ${spot.vicinity || 'No address'}</p>
+            <p><strong>Type:</strong> ${spot.types ? spot.types[0] : 'Unknown'}</p>
+        </div>
+    `).join('');
+    
+    console.log(`Displayed ${spots.length} spots in list`);
     return;
 }
 // display spots on map
