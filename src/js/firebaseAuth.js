@@ -22,9 +22,6 @@ function showMessage(message, divId){
   const lastName = document.getElementById('lName').value;
   const username = document.getElementById('username').value;
 
-  const auth = getAuth();
-  const db = getFirestore();
-
   createUserWithEmailAndPassword(auth, email, password)
     .then(userCredential => {
       const user = userCredential.user;
@@ -81,9 +78,6 @@ function showMessage(message, divId){
       }
     });
 });
-
-const auth = getAuth();
-const db = getFirestore();
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
