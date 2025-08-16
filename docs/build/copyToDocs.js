@@ -1,5 +1,8 @@
+require("dotenv").config()
 const fs = require('fs');
 const path = require('path');
+const index = fs.readFileSync('src/index.html', 'utf8');
+const replaced = index.replace('GOOGLE_MAPS_API_KEY', process.env.GOOGLE_MAPS_API_KEY);
 
 const fse = require('fs-extra');
 
