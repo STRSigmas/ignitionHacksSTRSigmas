@@ -13,12 +13,12 @@
             <div class="container-fluid min-vh-100 d-flex flex-column">
                 <div class="row justify-content-evenly">
                     <div class="col-12 justify-content-center align-items-center text-center">
-                        <h1 class="text-light title-text mt-4 fw-bold mb-5">StudyLocal</h1>
+                        <h1 class="text-light title-text mt-4 fw-bold mb-3">StudyLocal</h1>
                     </div>
                 </div>
                 <div class="row justify-content-evenly">
                     <div class="col-12">
-                        <div class="selection-card py-5 px-5 mx-2 mx-md-5 rounded-5">
+                        <div class="selection-card py-4 px-4 mx-2 mx-md-5 rounded-5">
                             <div class="d-flex flex-wrap align-items-center gap-5">
                                 <input type="number" class="form-control fs-4 w-auto" placeholder="Maximum distance" aria-label="Maximum distance" aria-describedby="basic-addon1">
                                 <div class="dropdown" data-bs-theme="dark">
@@ -182,11 +182,9 @@
                         <div class="btn btn-primary fs-4 w-25" id="findSpotsBtn">Find spots now</div>
                     </div>
                 </div>
-				<div class="row d-flex flex-grow-1" style="height: 100%;">
-                    <div class="col-7 mt-4 ms-5 d-flex flex-column">
-                        <div class="content mb-5 flex-grow-1 d-flex flex-column">
-						    <div class="rounded-5 flex-grow-1" id="map" style="overflow: hidden;"></div>
-					    </div>
+				<div class="row flex-grow-1 h-100 mapContainer">
+                    <div class="col-7 mt-4 ms-5 d-flex flex-column mapContainer">
+						<div class="rounded-5 flex-grow-1" id="map" style="overflow: hidden;"></div>
                     </div>
                     <div class="col-5">
 
