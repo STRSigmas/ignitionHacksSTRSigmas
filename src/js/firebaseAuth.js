@@ -26,7 +26,11 @@ function showMessage(message, divId){
       const userData={
         email: email,
         firstName: firstName,
-        lastName: lastName
+        lastName: lastName,
+        subjects: [],
+        anonymous: true,
+        description: "",
+        level: 0
       };
       showMessage('Account created successfully', 'signUpMessage');
       const docRef=doc(db, "users", user.uid);
