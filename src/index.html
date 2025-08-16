@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>StudyLocal</title>
+        <title>Home | StudyLocal</title>
         <link href="bootstrap/main.css" rel="stylesheet" />
         <link href="css/custom.css" rel="stylesheet" />
         <script src="bootstrap/bootstrap.bundle.min.js"></script>
@@ -18,8 +18,8 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <div class="navbar-nav ms-auto">
-                            <a class="nav-link active fw-bold fs-4">Home</a>
-                            <a class="nav-link fw-bold fs-4">Profile</a>
+                            <a class="nav-link active fw-bold fs-4" href="index.html">Home</a>
+                            <a class="nav-link fw-bold fs-4" href="profile.html">Profile</a>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                     <div class="col-12">
                         <div class="selection-card py-4 px-4 mx-2 mx-md-5 rounded-5">
                             <div class="d-flex flex-wrap align-items-center gap-5">
-                                <input type="number" class="form-control fs-4 w-auto" placeholder="Maximum distance" aria-label="Maximum distance" aria-describedby="basic-addon1">
+                                <input id="radiusSelect" type="number" class="form-control fs-4 w-auto" placeholder="Maximum distance (km)" aria-label="Maximum distance (km)" aria-describedby="basic-addon1">
                                 <div class="dropdown" data-bs-theme="dark">
                                     <button class="btn btn-primary dropdown-toggle fs-4 rounded-3" type="button" data-bs-toggle="dropdown" style="max-width: 16rem; overflow-x: hidden;" aria-expanded="false" id="multiSelectDropdown">Location types</button>
                                     <ul class="dropdown-menu">
@@ -73,8 +73,8 @@
                                 <div class="d-flex flex-column">
                                     <label class="form-label fs-4">Other students</label>
                                     <div class="d-flex align-items-center" style="gap: 0.5rem">
-                                        <input type="number" class="form-control fs-4" style="width: 200px;" placeholder="Minimum" aria-label="Minimum distance" aria-describedby="basic-addon1">
-                                        <input type="number" class="form-control fs-4" style="width: 200px;" placeholder="Maximum" aria-label="Maximum distance" aria-describedby="basic-addon1">
+                                        <input type="number" class="form-control fs-4" style="width: 200px;" placeholder="Minimum" aria-label="Minimum" aria-describedby="basic-addon1">
+                                        <input type="number" class="form-control fs-4" style="width: 200px;" placeholder="Maximum" aria-label="Maximum" aria-describedby="basic-addon1">
                                     </div>
                                 </div>
                                 <div class="dropdown" data-bs-theme="dark">
@@ -131,9 +131,9 @@
                                         <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Film Studies">Film Studies</label></li>
                                         <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="French">French</label></li>
                                         <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="English">English</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="English">Mandarin Chinese</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="English">Punjabi</label></li>
-                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="English">Spanish</label></li>
+                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Mandarin Chinese">Mandarin Chinese</label></li>
+                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Punjabi">Punjabi</label></li>
+                                        <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Spanish">Spanish</label></li>
                                         <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Business Administration">Business Administration</label></li>
                                         <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Marketing">Marketing</label></li>
                                         <li class="d-flex align-items-center"><label class="fs-4 ms-2 me-3"><input type="checkbox" class="subjectDrop me-2" value="Finance">Finance</label></li>

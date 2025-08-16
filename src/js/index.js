@@ -48,7 +48,8 @@ document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".dropdown-menu li").forEach(function(li, idx) {
                 if (li.classList.contains("dropdown-search")) return
                 const label = li.textContent.toLowerCase()
-                li.style.display = label.includes(filter) ? "" : "none"
+                const shouldShow = label.includes(filter)
+                li.style.setProperty('display', shouldShow ? 'flex' : 'none', 'important')
             })
         })
     }
