@@ -1,0 +1,25 @@
+{
+  "name": "ignitionhacksstrsigmas",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node ../IgnitionHacksSTRSigmas/src/build/copyToDocs.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leotyes/ignitionHacksSTRSigmas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leotyes/ignitionHacksSTRSigmas/issues"
+  },
+  "homepage": "https://github.com/leotyes/ignitionHacksSTRSigmas#readme",
+  "description": "",
+  "dependencies": {
+    "bootstrap": "^5.3.7",
+    "fs-extra": "^11.3.1"
+  }
+}
