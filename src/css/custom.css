@@ -83,5 +83,119 @@ html, body {
 }
 
 .mapContainer {
-    height: calc(100vh - 400px);
+    min-height: calc(100vh - 400px);
+}
+
+.sidebar {
+    flex: 1;
+    background: #A3A3CCFF;
+    overflow-y: auto;
+    min-width: 350px;
+}
+
+.sidebar h2 {
+    padding: 1.5rem;
+    background: #A3A3CCFF;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.spots-list {
+    padding: 1rem;
+    min-height: calc(100vh - 400px);
+}
+
+.placeholder {
+    text-align: center;
+    color: #A3A3CCFF;
+    padding: 2rem;
+    font-style: italic;
+}
+
+.spot-card {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.spot-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-color: #667eea;
+}
+
+.spot-rank {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-right: 1rem;
+}
+
+.spot-info {
+    flex: 1;
+}
+
+.spot-info h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #2c3e50;
+}
+
+.spot-address {
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.spot-meta {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.spot-rating, .spot-distance, .spot-type {
+    background: #f8f9fb;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    color: #5a6c7d;
+    font-weight: 500;
+}
+
+.spot-rating {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.spot-score {
+    text-align: center;
+    margin-left: 1rem;
+}
+
+.score-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #27ae60;
+}
+
+.score-label {
+    font-size: 0.7rem;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }

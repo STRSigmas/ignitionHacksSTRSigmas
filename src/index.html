@@ -10,10 +10,24 @@
     </head>
     <body class="bg-dark">
         <main>
+            <nav class="navbar navbar-dark bg-dark navbar-expand-lg py-2 shadow">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-0 ms-3 fw-bold fs-3">StudyLocal</span>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <div class="navbar-nav ms-auto">
+                            <a class="nav-link active fw-bold fs-4">Home</a>
+                            <a class="nav-link fw-bold fs-4">Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
             <div class="container-fluid min-vh-100 d-flex flex-column">
                 <div class="row justify-content-evenly">
                     <div class="col-12 justify-content-center align-items-center text-center">
-                        <h1 class="text-light title-text mt-4 fw-bold mb-3">StudyLocal</h1>
+                        <h1 class="text-light title-text mt-4 fw-bold">StudyLocal</h1>
                     </div>
                 </div>
                 <div class="row justify-content-evenly">
@@ -182,12 +196,17 @@
                         <div class="btn btn-primary fs-4 w-25" id="findSpotsBtn">Find spots now</div>
                     </div>
                 </div>
-				<div class="row flex-grow-1 h-100 mapContainer">
-                    <div class="col-7 mt-4 ms-5 d-flex flex-column mapContainer">
-						<div class="rounded-5 flex-grow-1" id="map" style="overflow: hidden;"></div>
+				<div class="row mt-4 flex-grow-1 h-100 mapContainer">
+                    <div class="col-7 ps-5 d-flex flex-column mapContainer">
+						<div class="rounded-5 flex-grow-1 mapContainer" id="map"></div>
                     </div>
                     <div class="col-5">
-
+                        <div class="sidebar rounded-5">
+                            <h2 class="fs-3">Study Spots</h2>
+                            <div id="spotsList" class="spots-list">
+                                <p class="fs-4 placeholder">Click "Find Study Spots" to discover locations near you</p>
+                            </div>
+                        </div>
                     </div>
 				</div>
 			</div>
