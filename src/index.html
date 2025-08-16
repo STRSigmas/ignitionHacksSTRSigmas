@@ -7,7 +7,6 @@
         <script src="bootstrap/bootstrap.bundle.min.js"></script>
         <script src="js/index.js"></script>
         <script src="script.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&loading=async&libraries=maps&v=beta" defer></script>
     </head>
     <body class="bg-dark">
         <main>
@@ -162,12 +161,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="row flex-grow-1 h-100">
-                    <div class="col-8 d-flex flex-column h-100">
-                        <iframe class="flex-grow-1 mt-5 ms-5 w-100" style="border-radius:10px" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCWw9WQ-NZvohw6cyog_E-SB_GxCCs8hr0&q=Space+Needle,Seattle+WA"></iframe>
+                <div class="row justify-content-evenly mt-5">
+                    <div class="col-8 d-flex justify-content-end">
+                        <input
+                            type="text"
+                            class="form-control fs-2 w-75"
+                            placeholder="Enter address here"
+                            aria-label="Enter address here"
+                            aria-describedby="basic-addon1"
+                        />
+                        <div id="autocompleteDropdown" class="autocomplete-dropdown position-absolute w-100 bg-light rounded shadow-lg" style="top: 100%; z-index: 1000; max-height: 300px; overflow-y: auto; display: none;"></div>
                     </div>
                     <div class="col-4">
-                        <div id="useLocationBtn" class="btn btn-primary fs-2">Use current location</div>
+                        <div id="useLocationBtn" class="btn btn-primary fs-2 me-5">Use current location</div>
                     </div>
                 </div>
 				<div class="row flex-grow-1">
