@@ -5,13 +5,22 @@ const fs = require('fs');
 const app = express();
 const PORT = 8080;
 
-// Middleware to parse JSON in POST requests
+// Middleware and static routes
 app.use(express.json());
+app.use("/bootstrap", express.static(path.join(__dirname, 'bootstrap')));
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Route handlers
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-// API to get study spots
+app.get('/test', (req, res) => {
+    res.send('Test route works!');
+});
+
+// API endpoints
 app.get('/api/spots', (req, res) => {
     const spotsFile = path.join(__dirname, 'spots.json');
     fs.readFile(spotsFile, 'utf8', (err, data) => {
@@ -27,7 +36,7 @@ app.get('/api/spots', (req, res) => {
     });
 });
 
-// Start the server
+// Server startup
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
