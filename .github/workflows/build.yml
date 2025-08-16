@@ -40,6 +40,14 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v4
 
+    - name: Verify build output
+      run: |
+        if [ ! -f docs/index.html ]; then
+          echo "ERROR: docs/index.html not found!"
+          exit 1
+        fi
+        echo "Build successful - index.html exists"
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
