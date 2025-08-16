@@ -250,7 +250,7 @@ function searchForStudySpots() {
     studySpots = [];
     const searchPromises = [];
 
-    const placeTypes = ['library', 'cafe', 'university', 'book_store', 'restaurant', 'school', 'lodging', 'establishment'];
+    const placeTypes = ['library', 'cafe', 'university', 'school', 'lodging', 'establishment'];
 
     const radiusSelect = document.getElementById('radiusSelect');
     const radiusValue = radiusSelect ? parseInt(radiusSelect.value, 10) : NaN;
@@ -262,13 +262,11 @@ function searchForStudySpots() {
             location: userLocation,
             radius: selectedRadius,
             type: type,
-            keyword: type === 'cafe' ? 'wifi quiet study' :
-                    type === 'library' ? 'quiet study book books' :
-                    type === 'university' ? 'study group' :
-                    type === 'book_store' ? 'reading nook' :
-                    type === 'restaurant' ? 'study friendly' :
-                    type === 'school' ? 'tutoring' :
-                    type === 'lodging' ? 'lobby study retreat wifi' :
+            keyword: type === 'cafe' ? 'cafe coffee' :
+                    type === 'library' ? 'book books read reading' :
+                    type === 'university' ? 'university' :
+                    type === 'school' ? 'tutoring enroll learn' :
+                    type === 'lodging' ? 'lobby rooms' :
                     type === 'establishment' ? 'coworking study spot space' : 'study'
         };
 
@@ -281,7 +279,7 @@ function searchForStudySpots() {
                         if (!studySpots.find(spot => spot.place_id === place.place_id)) { // avoid duplicates
                             studySpots.push({
                                 ...place,
-                                placeType: place
+                                placeType: type  // Store the type string, not the place object
                             });
                         }
                     });
@@ -437,6 +435,23 @@ function calculateScore(place) {
                'No specific study features mentioned in reviews'
     };
 
+    // place type scoring with priorties
+    const typeScores = {
+        'library': 25,
+        'cafe': 20,
+        'university': 15,
+        'lodging': 12,
+        'school': 8,
+        'establishment': 3
+    };
+    // determine type score and add to score accumulator
+    const typeScore = typeScores[place.placeType] || 2;
+    score += typeScore;
+    // add type to factors
+    factors.placeType = {
+        value: place.placeType.charAt(0).toUpperCase() + place.placeType.slice(1)
+    };
+
     // implement all other scoring later
     
     return {
@@ -494,7 +509,7 @@ function displaySpots(spots) {
             <p><strong>Distance:</strong> ${spot.scoreData.distance.toFixed(2)} km</p>
             <p><strong>Rating:</strong> ${spot.rating || 'No rating'} ⭐ (${spot.user_ratings_total || 0} reviews)</p>
             <p><strong>Address:</strong> ${spot.vicinity || 'No address'}</p>
-            <p><strong>Type:</strong> ${spot.types ? spot.types[0] : 'Unknown'}</p>
+            <p><strong>Type:</strong> ${spot.placeType}</p>
         </div>
     `).join('');
     return;
