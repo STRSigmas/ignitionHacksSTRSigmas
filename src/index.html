@@ -169,11 +169,17 @@
                             placeholder="Enter address here"
                             aria-label="Enter address here"
                             aria-describedby="basic-addon1"
+                            id="addressInput"
                         />
                         <div id="autocompleteDropdown" class="autocomplete-dropdown position-absolute w-100 bg-light rounded shadow-lg" style="top: 100%; z-index: 1000; max-height: 300px; overflow-y: auto; display: none;"></div>
                     </div>
                     <div class="col-4">
                         <div id="useLocationBtn" class="btn btn-primary fs-2 me-5">Use current location</div>
+                    </div>
+                </div>
+                <div class="row justify-content-evenly mt-5">
+                    <div class="col-12 d-flex justify-content-center">
+                        <div class="btn btn-primary fs-2 w-25" id="findSpotsBtn">Find spots now</div>
                     </div>
                 </div>
 				<div class="row flex-grow-1">
@@ -188,6 +194,7 @@
 				</div>
 			</div>
 		</main>
+        <
 		<script src="js/app.js"></script>
 		<script
 			async
